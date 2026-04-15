@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Western Region Expansion Strategy — Restaurant Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#2C3E50;--slate:#5D6D7E;--steel:#85929E;
+  --teal:#1A7A8A;--teal-lt:#E8F4F6;
+  --gold:#C9A84C;--gold-lt:#FBF5E6;
+  --sage:#4A9B6F;--sage-lt:#E8F5EE;
+  --red:#C0392B;--red-lt:#FDEDEC;
+  --amber:#D4AC0D;--amber-lt:#FEF9E7;
+  --bg:#F4F6F8;--surface:#FFF;--border:#DDE1E7;
+  --text:#1C2B3A;--muted:#6B7A8D;--row-a:#F8FAFB;
+}
+html{scroll-behavior:auto}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;overflow-x:hidden;width:100%}
+h1{font-family:'Playfair Display',serif;line-height:1.2}
+h2,h3,h4{font-family:Arial,sans-serif;line-height:1.2}
+
+/* COVER – compact */
+.cover{background:var(--navy);color:#fff;padding:22px 24px 18px;position:relative;overflow:hidden;width:100%}
+.cover::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);pointer-events:none}
+.cover-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.cover-left{flex:1;min-width:220px}
+.cv-badge{display:inline-block;font-family:Arial,sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:3px 10px;border-radius:2px;margin-bottom:8px}
+.cover h1{font-size:1.7rem;font-weight:700;letter-spacing:-.01em;color:#fff;margin-bottom:3px}
+.cover h1 em{color:var(--gold);font-style:normal}
+.cover-sub{font-size:.72rem;color:rgba(255,255,255,.55);font-family:Arial,sans-serif}
+.cv-kpis{display:flex;gap:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:4px;overflow:hidden;flex-wrap:wrap}
+.ck{padding:10px 18px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.ck:last-child{border-right:none}
+.ck .v{font-family:Arial,sans-serif;font-size:1.25rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:2px}
+.ck .l{font-size:.58rem;color:rgba(255,255,255,.5);letter-spacing:.09em;text-transform:uppercase;font-family:Arial,sans-serif}
+
+/* TAB BAR */
+.tab-bar{background:#1C2B3A;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(0,0,0,.2);width:100%}
+.tab-inner{max-width:1280px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;gap:6px}
+.tab-inner::-webkit-scrollbar{display:none}
+.tab-inner{padding:8px 12px}
+.tab-btn{
+  flex-shrink:0;
+  font-family:Arial,sans-serif;font-size:.68rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:8px 14px;border:none;cursor:pointer;
+  border-radius:5px;white-space:nowrap;
+  transition:all .2s ease;
+  opacity:.65;
+  transform:translateY(0);
+}
+/* Each tab has its own solid color always visible */
+.tab-btn[data-tab="dashboard"]   {background:#2C3E50;color:#A9C0D4;--ac:#A9C0D4}
+.tab-btn[data-tab="feasibility"] {background:#1A7A8A;color:#A8DDE4;--ac:#A8DDE4}
+.tab-btn[data-tab="capex"]       {background:#7D6608;color:#F5D87A;--ac:#F5D87A}
+.tab-btn[data-tab="projections"] {background:#2E7D52;color:#A3D9B8;--ac:#A3D9B8}
+.tab-btn[data-tab="scenarios"]   {background:#922B21;color:#F5B7B1;--ac:#F5B7B1}
+.tab-btn[data-tab="strategy"]    {background:#4A5568;color:#C5CDD8;--ac:#C5CDD8}
+.tab-btn[data-tab="roadmap"]     {background:#1A4A7A;color:#A8C8F0;--ac:#A8C8F0}
+/* Active state — brighter, lifted, full opacity */
+.tab-btn.active{
+  opacity:1;
+  transform:translateY(-2px);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  filter:brightness(1.25);
+}
+.tab-btn:hover:not(.active){opacity:.85;transform:translateY(-1px)}
+
+/* LAYOUT */
+.page{max-width:1280px;margin:0 auto;padding:28px 20px 64px;width:100%}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:16px 14px;border-left:3px solid var(--accent,var(--navy))}
+.kpi-card .lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.kpi-card .val{font-family:Arial,sans-serif;font-size:1.55rem;font-weight:700;color:var(--navy);line-height:1;margin-bottom:2px}
+.kpi-card .sub{font-size:.7rem;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap}
+.kpi-card .sub span{display:flex;flex-direction:column;gap:1px}
+.kpi-card .sub .sk{font-size:.6rem;color:var(--steel)}
+.kpi-card .sub .sv{font-size:.72rem;font-weight:700;color:var(--slate)}
+
+/* COMPARE */
+.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.cmp-box{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:18px}
+.cmp-box h3{font-size:.88rem;color:var(--navy);margin-bottom:14px}
+.mc{margin-bottom:11px}
+.mc-lbl{font-size:.68rem;color:var(--muted);margin-bottom:3px}
+.mc-row{display:flex;align-items:center;gap:7px}
+.mc-row .ml{font-size:.63rem;font-weight:700;color:var(--slate);width:18px}
+.trk{flex:1;height:7px;background:var(--row-a);border-radius:4px;overflow:hidden}
+.fill{height:100%;border-radius:4px}
+.mc-row .mv{font-size:.65rem;font-weight:700;color:var(--navy);width:60px;text-align:right}
+
+/* SEC HEADER */
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:11px;border-bottom:2px solid var(--border)}
+.sec-n{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-family:Arial,sans-serif;font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-hd h2{font-size:1.15rem;color:var(--navy)}
+.sec-hd .ss{font-size:.7rem;color:var(--muted);margin-left:auto;font-family:Arial,sans-serif}
+
+/* TABLES */
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:5px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:420px}
+thead th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-family:Arial,sans-serif;white-space:nowrap}
+th.r,td.r{text-align:right}
+td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+td.lbl{font-weight:600;color:var(--slate)}
+tr:nth-child(even) td{background:var(--row-a)}
+tr.tot td{background:var(--navy)!important;color:#fff;font-weight:700}
+tr.sub td{background:var(--slate)!important;color:#fff;font-weight:700}
+tr.gp td{background:#EFF9F4!important;font-weight:700;color:var(--sage)}
+tr.ebit td{background:var(--navy)!important;color:#fff;font-weight:700}
+tr.ebit td.r{color:var(--gold)}
+tr.mg td{background:var(--gold-lt)!important;font-weight:700;color:var(--navy)}
+tr.co td.r{color:var(--red)}
+tr.inc td{font-weight:700;color:var(--sage)}
+tr.pb td{background:var(--teal-lt)!important;font-weight:700;color:var(--teal)}
+.pct{display:inline-block;font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:9px;background:var(--teal-lt);color:var(--teal)}
+
+/* TWO COL */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+.ch{padding:12px 16px;background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.ch.sl{background:var(--slate)}
+.ch h3{font-size:.95rem}
+.ch .cs{font-size:.65rem;opacity:.6;margin-top:1px;font-family:Arial,sans-serif}
+.ch .ct{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.15);padding:3px 8px;border-radius:2px;font-family:Arial,sans-serif;white-space:nowrap}
+
+/* SCENARIOS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{border-radius:5px;border:1px solid var(--border);overflow:hidden}
+.sc-h{padding:14px 12px;color:#fff;text-align:center}
+.sc-h .sl{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:5px;font-family:Arial,sans-serif}
+.sc-h .sm{font-family:Arial,sans-serif;font-size:1.9rem;font-weight:700;line-height:1}
+.sc-h .sp{font-size:.62rem;margin-top:4px;opacity:.7;font-family:Arial,sans-serif}
+.sc-b{padding:10px 12px;background:var(--surface)}
+.sc-b .sr{display:flex;justify-content:space-between;font-size:.74rem;padding:4px 0;border-bottom:1px solid var(--border)}
+.sc-b .sr:last-child{border-bottom:none}
+.sc-b .sk{color:var(--muted)}
+.sc-b .sv{font-weight:700;color:var(--navy)}
+.s-pe .sc-h{background:var(--red)}
+.s-ba .sc-h{background:var(--slate)}
+.s-op .sc-h{background:var(--teal)}
+.s-be .sc-h{background:var(--navy)}
+
+/* RISKS */
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ri{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:14px 16px;border-left:3px solid var(--rc,var(--slate))}
+.ri-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ri h4{font-size:.88rem;color:var(--navy)}
+.bdg{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;font-family:Arial,sans-serif}
+.ri p{font-size:.75rem;color:var(--muted);line-height:1.5}
+
+/* OBJECTIVES */
+.og{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ob{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:14px 16px;position:relative}
+.ob .on{font-family:Arial,sans-serif;font-size:1.7rem;font-weight:700;color:var(--border);position:absolute;top:8px;right:12px;line-height:1}
+.pr{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;padding:2px 7px;border-radius:2px;display:inline-block;font-family:Arial,sans-serif}
+.p-h{background:var(--sage-lt);color:var(--sage)}
+.p-m{background:var(--amber-lt);color:#8E6F1A}
+.p-f{background:var(--row-a);color:var(--steel)}
+.ob h4{font-size:.85rem;color:var(--navy);margin-bottom:4px}
+.ob p{font-size:.74rem;color:var(--muted);line-height:1.5}
+
+/* ROADMAP */
+.rmw{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:18px 22px}
+.ph{font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);padding:8px 0;display:flex;align-items:center;gap:8px;margin-bottom:2px;font-family:Arial,sans-serif}
+.ph::after{content:'';flex:1;height:1px;background:var(--border)}
+.ms{display:grid;grid-template-columns:24px 1fr 140px 120px 88px;gap:0;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.ms:last-child{border-bottom:none}
+.mn{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif}
+.mt{font-size:.78rem;font-weight:600;padding:0 10px;color:var(--text)}
+.mo{font-size:.7rem;color:var(--muted);padding:0 6px}
+.mp{font-size:.68rem;color:var(--muted)}
+.ms-s{text-align:right}
+.pill{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:9px;white-space:nowrap;font-family:Arial,sans-serif}
+.st-pl{background:var(--row-a);color:var(--steel)}
+.st-tg{background:var(--gold-lt);color:#8E6F1A}
+.st-on{background:var(--teal-lt);color:var(--teal)}
+
+/* RECS */
+.rl{display:flex;flex-direction:column;gap:9px}
+.rc{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:12px 16px}
+.rn{width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Arial,sans-serif}
+.rc h4{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:2px}
+.rc p{font-size:.74rem;color:var(--muted);line-height:1.5}
+
+/* ASSUME STRIP */
+.as{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ac{flex:1;min-width:80px;padding:10px 6px;text-align:center;border-right:1px solid var(--border)}
+.ac:last-child{border-right:none}
+.ac .ay{font-size:.65rem;font-weight:700;color:var(--navy);letter-spacing:.07em;margin-bottom:7px;font-family:Arial,sans-serif}
+.ac .ar{font-size:.65rem;color:var(--muted);padding:2px 0;font-family:Arial,sans-serif}
+.ac .ar b{font-weight:700;color:var(--navy)}
+
+/* NOTE */
+.note{font-size:.7rem;color:var(--muted);background:var(--row-a);border:1px solid var(--border);border-radius:4px;padding:8px 12px;margin-top:11px;border-left:3px solid var(--amber);line-height:1.5}
+
+/* FOOTER */
+.ft{margin-top:40px;padding:16px 20px;background:var(--navy);color:rgba(255,255,255,.5);font-size:.68rem;border-radius:4px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-family:Arial,sans-serif}
+.ft strong{color:rgba(255,255,255,.8)}
+
+/* MOBILE */
+@media(max-width:900px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .dash-row,.two,.rg,.og{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr 1fr}
+  .ms{grid-template-columns:24px 1fr auto}
+  .mo,.mp{display:none}
+}
+@media(max-width:580px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .sg{grid-template-columns:1fr 1fr}
+  .og{grid-template-columns:1fr 1fr}
+  .cover-inner{flex-direction:column;align-items:flex-start}
+  .cv-kpis{width:100%}
+  .ck{flex:1;padding:8px 6px}
+  .ck .v{font-size:1rem}
+  .tab-btn{padding:7px 10px;font-size:.6rem}
+  .page{padding:18px 12px 52px}
+  .cover{padding:16px 14px 14px}
+  .cover h1{font-size:1.4rem}
+}
+@media(max-width:380px){
+  .kpi-grid,.sg,.og{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-left">
+      <div class="cv-badge">Confidential — Senior Management</div>
+      <h1>Western Region <em>Expansion Strategy</em></h1>
+      <p class="cover-sub">Jeddah &nbsp;·&nbsp; Sobhy Kaber &amp; L'Avenue Branch 2 &nbsp;·&nbsp; Finance Division &nbsp;·&nbsp; 2027–2031</p>
+    </div>
+    <div class="cv-kpis">
+      <div class="ck"><div class="v">SAR 18.5M</div><div class="l">Total Capex</div></div>
+      <div class="ck"><div class="v">880</div><div class="l">Daily Covers</div></div>
+      <div class="ck"><div class="v">SAR 28.1M</div><div class="l">Year 1 Revenue</div></div>
+      <div class="ck"><div class="v">15.4%</div><div class="l">Op. Margin</div></div>
+      <div class="ck"><div class="v">SAR 4.3M</div><div class="l">EBIT</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" data-tab="dashboard" onclick="sw('dashboard',this)">● Dashboard</button>
+    <button class="tab-btn" data-tab="feasibility" onclick="sw('feasibility',this)">● Branch Feasibility</button>
+    <button class="tab-btn" data-tab="capex" onclick="sw('capex',this)">● Capex</button>
+    <button class="tab-btn" data-tab="projections" onclick="sw('projections',this)">● 5-Year Projections</button>
+    <button class="tab-btn" data-tab="scenarios" onclick="sw('scenarios',this)">● Scenarios</button>
+    <button class="tab-btn" data-tab="strategy" onclick="sw('strategy',this)">● Strategy &amp; Objectives</button>
+    <button class="tab-btn" data-tab="roadmap" onclick="sw('roadmap',this)">● Roadmap</button>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- TAB: DASHBOARD -->
+<div id="tab-dashboard" class="tab-panel active">
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--accent:var(--navy)">
+      <div class="lbl">Total Capex Investment</div><div class="val">SAR 18.5M</div>
+      <div class="sub"><span><span class="sk">Sobhy Kaber</span><span class="sv">SAR 11,769,772</span></span><span><span class="sk">L'Avenue Br.2</span><span class="sv">SAR 6,706,198</span></span></div>
+    </div>
+    <div class="kpi-card" style="--accent:var(--teal)">
+      <div class="lbl">Annual Revenue (330 days)</div><div class="val">SAR 28.1M</div>
+      <div class="sub"><span><span class="sk">Sobhy Kaber</span><span class="sv">SAR 14,586,000</span></span><span><span class="sk">L'Avenue Br.2</span><span class="sv">SAR 13,530,000</span></span></div>
+    </div>
+    <div class="kpi-card" style="--accent:var(--sage)">
+      <div class="lbl">Annual EBIT</div><div class="val">SAR 4.3M</div>
+      <div class="sub"><span><span class="sk">Sobhy Kaber</span><span class="sv">SAR 1,727,960</span></span><span><span class="sk">L'Avenue Br.2</span><span class="sv">SAR 2,613,240</span></span></div>
+    </div>
+    <div class="kpi-card" style="--accent:var(--gold)">
+      <div class="lbl">Operating Margin</div><div class="val">15.4%</div>
+      <div class="sub"><span><span class="sk">Sobhy Kaber</span><span class="sv">11.8%</span></span><span><span class="sk">L'Avenue Br.2</span><span class="sv">19.3%</span></span></div>
+    </div>
+  </div>
+
+  <div class="dash-row">
+    <div class="cmp-box">
+      <h3>Branch Performance Comparison</h3>
+      <div class="mc"><div class="mc-lbl">Daily Revenue (SAR)</div>
+        <div class="mc-row" style="margin-bottom:4px"><span class="ml">SK</span><div class="trk"><div class="fill" style="width:100%;background:var(--navy)"></div></div><span class="mv">44,200</span></div>
+        <div class="mc-row"><span class="ml">LA</span><div class="trk"><div class="fill" style="width:92.8%;background:var(--slate)"></div></div><span class="mv">41,000</span></div>
+      </div>
+      <div class="mc"><div class="mc-lbl">Operating Margin</div>
+        <div class="mc-row" style="margin-bottom:4px"><span class="ml">SK</span><div class="trk"><div class="fill" style="width:47.2%;background:var(--navy)"></div></div><span class="mv">11.8%</span></div>
+        <div class="mc-row"><span class="ml">LA</span><div class="trk"><div class="fill" style="width:77.2%;background:var(--sage)"></div></div><span class="mv">19.3%</span></div>
+      </div>
+      <div class="mc"><div class="mc-lbl">Daily Covers</div>
+        <div class="mc-row" style="margin-bottom:4px"><span class="ml">SK</span><div class="trk"><div class="fill" style="width:100%;background:var(--navy)"></div></div><span class="mv">470</span></div>
+        <div class="mc-row"><span class="ml">LA</span><div class="trk"><div class="fill" style="width:87.2%;background:var(--slate)"></div></div><span class="mv">410</span></div>
+      </div>
+      <div class="mc"><div class="mc-lbl">Payback Period (shorter = better)</div>
+        <div class="mc-row" style="margin-bottom:4px"><span class="ml">SK</span><div class="trk"><div class="fill" style="width:100%;background:var(--amber)"></div></div><span class="mv">6.81 yrs</span></div>
+        <div class="mc-row"><span class="ml">LA</span><div class="trk"><div class="fill" style="width:37.7%;background:var(--sage)"></div></div><span class="mv">2.57 yrs</span></div>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Metric</th><th class="r">Sobhy Kaber</th><th class="r">L'Avenue Br.2</th><th class="r">Combined</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Capex (SAR)</td><td class="r">11,769,772</td><td class="r">6,706,198</td><td class="r"><b>18,475,970</b></td></tr>
+          <tr><td class="lbl">Daily Covers</td><td class="r">470</td><td class="r">410</td><td class="r"><b>880</b></td></tr>
+          <tr><td class="lbl">Avg. Daily Revenue</td><td class="r">SAR 44,200</td><td class="r">SAR 41,000</td><td class="r"><b>SAR 85,200</b></td></tr>
+          <tr><td class="lbl">Annual Revenue</td><td class="r">SAR 14,586,000</td><td class="r">SAR 13,530,000</td><td class="r"><b>SAR 28,116,000</b></td></tr>
+          <tr><td class="lbl">Operating Margin</td><td class="r">11.8%</td><td class="r">19.3%</td><td class="r"><b>15.4%</b></td></tr>
+          <tr><td class="lbl">EBIT (SAR)</td><td class="r">1,727,960</td><td class="r">2,613,240</td><td class="r"><b>4,341,200</b></td></tr>
+          <tr><td class="lbl">Payback Period</td><td class="r">6.81 yrs</td><td class="r">2.57 yrs</td><td class="r">—</td></tr>
+          <tr><td class="lbl">Seating Capacity</td><td class="r">100 chairs</td><td class="r">50 chairs</td><td class="r"><b>150 chairs</b></td></tr>
+          <tr><td class="lbl">Floor Area</td><td class="r">400 m²</td><td class="r">250 m²</td><td class="r"><b>650 m²</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: FEASIBILITY -->
+<div id="tab-feasibility" class="tab-panel">
+  <div class="two" style="margin-bottom:14px">
+    <div class="card">
+      <div class="ch"><div><h3>Sobhy Kaber</h3><div class="cs">Fine Dining · 100 chairs · 400 m² · 12PM–12AM</div></div><div class="ct">SAR 44,200/day</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Meal / Service</th><th class="r">Orders/Day</th><th class="r">Avg. Order Value</th><th class="r">Daily Revenue</th></tr></thead>
+        <tbody>
+          <tr><td>Delivery</td><td class="r">100</td><td class="r">SAR 70</td><td class="r">SAR 7,000</td></tr>
+          <tr><td>Lunch</td><td class="r">110</td><td class="r">SAR 90</td><td class="r">SAR 9,900</td></tr>
+          <tr><td>Dinner</td><td class="r">260</td><td class="r">SAR 105</td><td class="r">SAR 27,300</td></tr>
+          <tr class="tot"><td><b>Total</b></td><td class="r">470</td><td class="r">—</td><td class="r">SAR 44,200</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="ch sl"><div><h3>L'Avenue Branch 2</h3><div class="cs">All-Day Dining · 50 chairs · 250 m² · 7AM–1AM</div></div><div class="ct">SAR 41,000/day</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Meal / Service</th><th class="r">Orders/Day</th><th class="r">Avg. Order Value</th><th class="r">Daily Revenue</th></tr></thead>
+        <tbody>
+          <tr><td>Delivery</td><td class="r">30</td><td class="r">SAR 60</td><td class="r">SAR 1,800</td></tr>
+          <tr><td>Breakfast</td><td class="r">80</td><td class="r">SAR 85</td><td class="r">SAR 6,800</td></tr>
+          <tr><td>Lunch</td><td class="r">120</td><td class="r">SAR 90</td><td class="r">SAR 10,800</td></tr>
+          <tr><td>Dinner</td><td class="r">180</td><td class="r">SAR 120</td><td class="r">SAR 21,600</td></tr>
+          <tr class="tot"><td><b>Total</b></td><td class="r">410</td><td class="r">—</td><td class="r">SAR 41,000</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="two" style="margin-bottom:11px">
+    <div class="card">
+      <div class="ch"><div><h3>Sobhy Kaber — Annual P&amp;L</h3><div class="cs">330 Working Days</div></div><div class="ct">SAR</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Line Item</th><th class="r">%</th><th class="r">Amount (SAR)</th></tr></thead>
+        <tbody>
+          <tr class="inc"><td><b>Revenue</b></td><td class="r">—</td><td class="r"><b>14,586,000</b></td></tr>
+          <tr class="co"><td>Cost of Goods Sold</td><td class="r"><span class="pct">30%</span></td><td class="r">(4,375,800)</td></tr>
+          <tr class="gp"><td><b>Gross Profit</b></td><td class="r">70%</td><td class="r"><b>10,210,200</b></td></tr>
+          <tr class="co"><td>Labour Costs</td><td class="r"><span class="pct">28%</span></td><td class="r">(4,084,080)</td></tr>
+          <tr class="co"><td>Rent &amp; Utilities</td><td class="r"><span class="pct">10%</span></td><td class="r">(1,458,600)</td></tr>
+          <tr class="co"><td>Marketing &amp; Advertising</td><td class="r"><span class="pct">2%</span></td><td class="r">(291,720)</td></tr>
+          <tr class="co"><td>Depreciation (5 yrs)</td><td class="r">—</td><td class="r">(2,064,400)</td></tr>
+          <tr class="co"><td>General &amp; Administrative</td><td class="r"><span class="pct">4%</span></td><td class="r">(583,440)</td></tr>
+          <tr class="sub"><td><b>Total Operating Costs</b></td><td class="r">—</td><td class="r">(12,858,040)</td></tr>
+          <tr class="ebit"><td><b>Net Operating Profit (EBIT)</b></td><td class="r">—</td><td class="r"><b>1,727,960</b></td></tr>
+          <tr class="mg"><td><b>Operating Margin</b></td><td class="r" colspan="2"><b>11.8%</b></td></tr>
+          <tr class="pb"><td>Payback Period</td><td class="r" colspan="2"><b>6.81 years</b></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="ch sl"><div><h3>L'Avenue Br.2 — Annual P&amp;L</h3><div class="cs">330 Working Days</div></div><div class="ct">SAR</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Line Item</th><th class="r">%</th><th class="r">Amount (SAR)</th></tr></thead>
+        <tbody>
+          <tr class="inc"><td><b>Revenue</b></td><td class="r">—</td><td class="r"><b>13,530,000</b></td></tr>
+          <tr class="co"><td>Cost of Goods Sold</td><td class="r"><span class="pct">30%</span></td><td class="r">(4,059,000)</td></tr>
+          <tr class="gp"><td><b>Gross Profit</b></td><td class="r">70%</td><td class="r"><b>9,471,000</b></td></tr>
+          <tr class="co"><td>Labour Costs</td><td class="r"><span class="pct">26%</span></td><td class="r">(3,517,800)</td></tr>
+          <tr class="co"><td>Rent &amp; Utilities</td><td class="r"><span class="pct">10%</span></td><td class="r">(1,353,000)</td></tr>
+          <tr class="co"><td>Marketing &amp; Advertising</td><td class="r"><span class="pct">2%</span></td><td class="r">(270,600)</td></tr>
+          <tr class="co"><td>Depreciation (5 yrs)</td><td class="r">—</td><td class="r">(1,175,160)</td></tr>
+          <tr class="co"><td>General &amp; Administrative</td><td class="r"><span class="pct">4%</span></td><td class="r">(541,200)</td></tr>
+          <tr class="sub"><td><b>Total Operating Costs</b></td><td class="r">—</td><td class="r">(10,916,760)</td></tr>
+          <tr class="ebit"><td><b>Net Operating Profit (EBIT)</b></td><td class="r">—</td><td class="r"><b>2,613,240</b></td></tr>
+          <tr class="mg"><td><b>Operating Margin</b></td><td class="r" colspan="2"><b>19.3%</b></td></tr>
+          <tr class="pb"><td>Payback Period</td><td class="r" colspan="2"><b>2.57 years</b></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="note">⚠ <b>Depreciation Note:</b> Straight-line over 5 years, excluding Pre-Opening (SK: SAR 1,212,362 | LA: SAR 695,374) and Contingency (SK: SAR 235,410 | LA: SAR 135,024), treated as Year-1 operating expenses per project accounting policy.</div>
+</div>
+
+<!-- TAB: CAPEX -->
+<div id="tab-capex" class="tab-panel">
+  <div class="two">
+    <div class="card">
+      <div class="ch"><h3>Sobhy Kaber — Capex</h3><div class="ct">SAR 11,769,772</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Item</th><th class="r">Amount (SAR)</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Consultants</td><td class="r">70,000</td><td class="r">0.6%</td></tr>
+          <tr><td>Interior &amp; Graphic Design</td><td class="r">84,000</td><td class="r">0.7%</td></tr>
+          <tr><td>MEP (Mechanical, Electrical, Plumbing)</td><td class="r">1,050,000</td><td class="r">8.9%</td></tr>
+          <tr><td>Building Works</td><td class="r">2,730,000</td><td class="r">23.2%</td></tr>
+          <tr><td>Decorations</td><td class="r">1,540,000</td><td class="r">13.1%</td></tr>
+          <tr><td>Construction Cost</td><td class="r">2,475,000</td><td class="r">21.0%</td></tr>
+          <tr><td>Kitchen &amp; Bar Equipment</td><td class="r">1,190,000</td><td class="r">10.1%</td></tr>
+          <tr><td>Furniture &amp; Fittings</td><td class="r">560,000</td><td class="r">4.8%</td></tr>
+          <tr><td>Chinaware, Cutleries &amp; Uniforms</td><td class="r">252,000</td><td class="r">2.1%</td></tr>
+          <tr><td>Music System &amp; Plasma Screens</td><td class="r">112,000</td><td class="r">1.0%</td></tr>
+          <tr><td>Other Miscellaneous</td><td class="r">140,000</td><td class="r">1.2%</td></tr>
+          <tr><td>OE / EPOS / Reservation / Website</td><td class="r">119,000</td><td class="r">1.0%</td></tr>
+          <tr><td>Pre-Opening <span style="font-size:.65em;color:var(--muted)">(Year-1 expense)</span></td><td class="r">1,212,362</td><td class="r">10.3%</td></tr>
+          <tr><td>Contingency <span style="font-size:.65em;color:var(--muted)">(excl. dep.)</span></td><td class="r">235,410</td><td class="r">2.0%</td></tr>
+          <tr class="tot"><td><b>Total Investment</b></td><td class="r"><b>11,769,772</b></td><td class="r">100%</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="ch sl"><h3>L'Avenue Br.2 — Capex</h3><div class="ct">SAR 6,706,198</div></div>
+      <div class="tw" style="border:none;border-radius:0"><table>
+        <thead><tr><th>Item</th><th class="r">Amount (SAR)</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Consultants</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td>Interior &amp; Graphic Design</td><td class="r">63,800</td><td class="r">1.0%</td></tr>
+          <tr><td>MEP (Mechanical, Electrical, Plumbing)</td><td class="r">754,000</td><td class="r">11.2%</td></tr>
+          <tr><td>Building Works</td><td class="r">2,204,000</td><td class="r">32.9%</td></tr>
+          <tr><td>Decorations</td><td class="r">522,000</td><td class="r">7.8%</td></tr>
+          <tr><td>Construction Cost</td><td class="r">1,375,000</td><td class="r">20.5%</td></tr>
+          <tr><td>Kitchen &amp; Bar Equipment</td><td class="r">696,000</td><td class="r">10.4%</td></tr>
+          <tr><td>Furniture &amp; Fittings</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td>Chinaware, Cutleries &amp; Uniforms</td><td class="r">87,000</td><td class="r">1.3%</td></tr>
+          <tr><td>Music System &amp; Plasma Screens</td><td class="r">58,000</td><td class="r">0.9%</td></tr>
+          <tr><td>Other Miscellaneous</td><td class="r">58,000</td><td class="r">0.9%</td></tr>
+          <tr><td>OE / EPOS / Reservation / Website</td><td class="r">58,000</td><td class="r">0.9%</td></tr>
+          <tr><td>Pre-Opening <span style="font-size:.65em;color:var(--muted)">(Year-1 expense)</span></td><td class="r">695,374</td><td class="r">10.4%</td></tr>
+          <tr><td>Contingency <span style="font-size:.65em;color:var(--muted)">(excl. dep.)</span></td><td class="r">135,024</td><td class="r">2.0%</td></tr>
+          <tr class="tot"><td><b>Total Investment</b></td><td class="r"><b>6,706,198</b></td><td class="r">100%</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: PROJECTIONS -->
+<div id="tab-projections" class="tab-panel">
+  <div class="as">
+    <div class="ac" style="background:var(--navy);color:#fff;min-width:100px">
+      <div class="ay" style="color:rgba(255,255,255,.5)">Assumption</div>
+      <div class="ar" style="color:rgba(255,255,255,.5)">Rev. Growth</div>
+      <div class="ar" style="color:rgba(255,255,255,.5)">Occupancy</div>
+      <div class="ar" style="color:rgba(255,255,255,.5)">Labour %</div>
+      <div class="ar" style="color:rgba(255,255,255,.5)">Food Cost</div>
+    </div>
+    <div class="ac"><div class="ay">2027</div><div class="ar"><b>Base</b></div><div class="ar"><b>70%</b></div><div class="ar"><b>27.0%</b></div><div class="ar"><b>30%</b></div></div>
+    <div class="ac"><div class="ay">2028</div><div class="ar"><b>+8%</b></div><div class="ar"><b>80%</b></div><div class="ar"><b>26.5%</b></div><div class="ar"><b>30%</b></div></div>
+    <div class="ac"><div class="ay">2029</div><div class="ar"><b>+10%</b></div><div class="ar"><b>85%</b></div><div class="ar"><b>25.5%</b></div><div class="ar"><b>29%</b></div></div>
+    <div class="ac"><div class="ay">2030</div><div class="ar"><b>+10%</b></div><div class="ar"><b>90%</b></div><div class="ar"><b>24.5%</b></div><div class="ar"><b>28%</b></div></div>
+    <div class="ac"><div class="ay">2031</div><div class="ar"><b>+8%</b></div><div class="ar"><b>90%</b></div><div class="ar"><b>24.5%</b></div><div class="ar"><b>28%</b></div></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Line Item (SAR)</th><th class="r">2027</th><th class="r">2028</th><th class="r">2029</th><th class="r">2030</th><th class="r">2031</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">Sobhy Kaber Revenue</td><td class="r">14,586,000</td><td class="r">15,752,880</td><td class="r">17,328,168</td><td class="r">19,060,985</td><td class="r">20,585,864</td></tr>
+      <tr><td class="lbl">L'Avenue Br.2 Revenue</td><td class="r">13,530,000</td><td class="r">14,612,400</td><td class="r">16,073,640</td><td class="r">17,681,004</td><td class="r">19,095,484</td></tr>
+      <tr class="sub"><td><b>Total Revenue</b></td><td class="r"><b>28,116,000</b></td><td class="r"><b>30,365,280</b></td><td class="r"><b>33,401,808</b></td><td class="r"><b>36,741,989</b></td><td class="r"><b>39,681,348</b></td></tr>
+      <tr class="co"><td>Food &amp; Beverage Cost</td><td class="r">(8,434,800)</td><td class="r">(9,109,584)</td><td class="r">(9,686,524)</td><td class="r">(10,287,757)</td><td class="r">(11,110,777)</td></tr>
+      <tr class="co"><td>Labour Costs</td><td class="r">(7,602,566)</td><td class="r">(8,052,872)</td><td class="r">(8,524,141)</td><td class="r">(9,009,136)</td><td class="r">(9,729,867)</td></tr>
+      <tr class="co"><td>Rent &amp; Utilities</td><td class="r">(2,811,600)</td><td class="r">(3,036,528)</td><td class="r">(3,340,181)</td><td class="r">(3,674,199)</td><td class="r">(3,968,135)</td></tr>
+      <tr class="co"><td>Marketing &amp; Advertising</td><td class="r">(562,320)</td><td class="r">(607,306)</td><td class="r">(668,036)</td><td class="r">(734,840)</td><td class="r">(793,627)</td></tr>
+      <tr class="co"><td>Depreciation</td><td class="r">(3,239,560)</td><td class="r">(3,239,560)</td><td class="r">(3,239,560)</td><td class="r">(3,239,560)</td><td class="r">(3,239,560)</td></tr>
+      <tr class="co"><td>General &amp; Administrative</td><td class="r">(1,124,640)</td><td class="r">(1,214,611)</td><td class="r">(1,336,072)</td><td class="r">(1,469,680)</td><td class="r">(1,587,254)</td></tr>
+      <tr class="sub"><td><b>Total Operating Costs</b></td><td class="r"><b>(23,775,486)</b></td><td class="r"><b>(25,260,461)</b></td><td class="r"><b>(26,794,514)</b></td><td class="r"><b>(28,415,172)</b></td><td class="r"><b>(30,429,220)</b></td></tr>
+      <tr class="ebit"><td><b>Net Operating Profit (EBIT)</b></td><td class="r"><b>4,340,514</b></td><td class="r"><b>5,104,819</b></td><td class="r"><b>6,607,294</b></td><td class="r"><b>8,326,817</b></td><td class="r"><b>9,252,128</b></td></tr>
+      <tr class="mg"><td><b>Operating Margin</b></td><td class="r"><b>15.4%</b></td><td class="r"><b>16.8%</b></td><td class="r"><b>19.8%</b></td><td class="r"><b>22.7%</b></td><td class="r"><b>23.3%</b></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<!-- TAB: SCENARIOS -->
+<div id="tab-scenarios" class="tab-panel">
+  <div class="sg">
+    <div class="sc s-pe"><div class="sc-h"><div class="sl">Pessimistic</div><div class="sm">8%</div><div class="sp">Probability: 15%</div></div><div class="sc-b"><div class="sr"><span class="sk">Occupancy</span><span class="sv">55%</span></div><div class="sr"><span class="sk">Revenue Growth</span><span class="sv">3% YoY</span></div><div class="sr"><span class="sk">Food Cost</span><span class="sv">34%</span></div><div class="sr"><span class="sk">Annual Revenue</span><span class="sv">~SAR 18M</span></div><div class="sr"><span class="sk">EBIT</span><span class="sv">~SAR 1.4M</span></div><div class="sr"><span class="sk">Payback</span><span class="sv">13+ yrs</span></div></div></div>
+    <div class="sc s-ba"><div class="sc-h"><div class="sl">Base Case</div><div class="sm">15%</div><div class="sp">Probability: 55%</div></div><div class="sc-b"><div class="sr"><span class="sk">Occupancy</span><span class="sv">70%</span></div><div class="sr"><span class="sk">Revenue Growth</span><span class="sv">8% YoY</span></div><div class="sr"><span class="sk">Food Cost</span><span class="sv">30%</span></div><div class="sr"><span class="sk">Annual Revenue</span><span class="sv">~SAR 28M</span></div><div class="sr"><span class="sk">EBIT</span><span class="sv">~SAR 4.3M</span></div><div class="sr"><span class="sk">Payback</span><span class="sv">8–10 yrs</span></div></div></div>
+    <div class="sc s-op"><div class="sc-h"><div class="sl">Optimistic</div><div class="sm">20%</div><div class="sp">Probability: 25%</div></div><div class="sc-b"><div class="sr"><span class="sk">Occupancy</span><span class="sv">85%</span></div><div class="sr"><span class="sk">Revenue Growth</span><span class="sv">12% YoY</span></div><div class="sr"><span class="sk">Food Cost</span><span class="sv">28%</span></div><div class="sr"><span class="sk">Annual Revenue</span><span class="sv">~SAR 36M</span></div><div class="sr"><span class="sk">EBIT</span><span class="sv">~SAR 7.2M</span></div><div class="sr"><span class="sk">Payback</span><span class="sv">6–7 yrs</span></div></div></div>
+    <div class="sc s-be"><div class="sc-h"><div class="sl">Best Case</div><div class="sm">25%</div><div class="sp">Probability: 5%</div></div><div class="sc-b"><div class="sr"><span class="sk">Occupancy</span><span class="sv">95%</span></div><div class="sr"><span class="sk">Revenue Growth</span><span class="sv">15% YoY</span></div><div class="sr"><span class="sk">Food Cost</span><span class="sv">26%</span></div><div class="sr"><span class="sk">Annual Revenue</span><span class="sv">~SAR 44M</span></div><div class="sr"><span class="sk">EBIT</span><span class="sv">~SAR 11M</span></div><div class="sr"><span class="sk">Payback</span><span class="sv">4–5 yrs</span></div></div></div>
+  </div>
+</div>
+
+<!-- TAB: STRATEGY -->
+<div id="tab-strategy" class="tab-panel">
+  <div class="sec-hd" style="margin-bottom:14px"><div class="sec-n">A</div><h2>Strategic Objectives</h2><span class="ss">2027 &amp; Beyond</span></div>
+  <div class="og" style="margin-bottom:24px">
+    <div class="ob"><div class="on">01</div><span class="pr p-h">High Priority</span><h4>Market Presence in Jeddah</h4><p>Simultaneous launch of both concepts in 2027, establishing a dual-brand footprint in the Western Region's primary market.</p></div>
+    <div class="ob"><div class="on">02</div><span class="pr p-h">High Priority</span><h4>Multi-Segment Targeting</h4><p>Sobhy Kaber (Fine Dining) targets the premium evening segment; L'Avenue (All-Day) captures breakfast-through-dinner across wider demographics.</p></div>
+    <div class="ob"><div class="on">03</div><span class="pr p-h">High Priority</span><h4>Achieve ROI ≤ 10 Years</h4><p>Daily cover target of ≥ 880 combined orders across 330 operating days to ensure the base-case payback timeline is met.</p></div>
+    <div class="ob"><div class="on">04</div><span class="pr p-m">Medium Priority</span><h4>Customer Loyalty &amp; Retention</h4><p>Loyalty programmes, terrace experience, and delivery partnerships (Jahez, HungerStation) to maximise repeat customer rate.</p></div>
+    <div class="ob"><div class="on">05</div><span class="pr p-m">Medium Priority</span><h4>Operational Excellence</h4><p>Unified quality benchmarks and a centralised training team to protect brand integrity and reduce operational variance.</p></div>
+    <div class="ob"><div class="on">06</div><span class="pr p-f">Future Phase</span><h4>Regional Expansion</h4><p>Makkah, Madinah, and Taif within 3 years. Feasibility study commences Q4 2027 once both Jeddah branches reach steady-state.</p></div>
+  </div>
+
+  <div class="sec-hd" style="margin-bottom:14px"><div class="sec-n">B</div><h2>Risk Register</h2><span class="ss">Key Risks &amp; Mitigations</span></div>
+  <div class="rg" style="margin-bottom:24px">
+    <div class="ri" style="--rc:var(--amber)"><div class="ri-top"><h4>Rising Operating Costs</h4><span class="bdg" style="background:var(--amber-lt);color:#8E6F1A">Medium</span></div><p>Weekly food-cost tracking tied to POS; fixed-price supplier contracts locked before launch to hedge against input cost inflation.</p></div>
+    <div class="ri" style="--rc:var(--red)"><div class="ri-top"><h4>Low Occupancy Rate</h4><span class="bdg" style="background:var(--red-lt);color:var(--red)">High</span></div><p>Structured soft opening followed by a full marketing launch. 6-month occupancy KPI reviewed weekly by the Operations Director.</p></div>
+    <div class="ri" style="--rc:var(--amber)"><div class="ri-top"><h4>Construction &amp; Fit-Out Delays</h4><span class="bdg" style="background:var(--amber-lt);color:#8E6F1A">Medium</span></div><p>Strict milestone schedule with contractual penalty clauses. Bi-weekly site progress reviews with buffer built into pre-opening timeline.</p></div>
+    <div class="ri" style="--rc:var(--sage)"><div class="ri-top"><h4>Competitive Pressure in Jeddah</h4><span class="bdg" style="background:var(--sage-lt);color:var(--sage)">Low</span></div><p>Clear brand differentiation through unique concepts, quality consistency, and the complete dining experience.</p></div>
+  </div>
+
+  <div class="sec-hd" style="margin-bottom:14px"><div class="sec-n">C</div><h2>Strategic Recommendations</h2></div>
+  <div class="rl">
+    <div class="rc"><div class="rn">1</div><div><h4>Drive Full Occupancy in First 6 Months</h4><p>Target corporate events, large Jeddah families, and social media influencers. Occupancy in this period is the single largest lever for closing the payback gap.</p></div></div>
+    <div class="rc"><div class="rn">2</div><div><h4>Monitor Food Cost Daily</h4><p>POS linked to inventory management. Weekly food-cost report issued every Sunday to the CEO. The 30% target is a ceiling, not a guideline.</p></div></div>
+    <div class="rc"><div class="rn">3</div><div><h4>Delivery as an Additional Revenue Stream</h4><p>Pre-launch agreements with Jahez and HungerStation. Delivery accounts for 130 of the 880 combined daily covers — a material revenue contributor.</p></div></div>
+    <div class="rc"><div class="rn">4</div><div><h4>Loyalty Programme from Day One</h4><p>Points system, Ramadan promotions, and birthday rewards operational at launch. Early loyalty sign-ups are a tracked KPI in the first 90 days.</p></div></div>
+    <div class="rc"><div class="rn">5</div><div><h4>Monthly Financial Reporting to the Board</h4><p>KPI dashboard vs. budget submitted by the 10th of each month. Variance exceeding ±10% on any major cost line triggers an immediate review meeting.</p></div></div>
+    <div class="rc"><div class="rn">6</div><div><h4>Prepare for Makkah &amp; Madinah Expansion</h4><p>Feasibility study commences Q4 2027. Jeddah serves as the operational blueprint for all subsequent Western Region branches.</p></div></div>
+  </div>
+</div>
+
+<!-- TAB: ROADMAP -->
+<div id="tab-roadmap" class="tab-panel">
+  <div class="rmw">
+    <div class="ph">Phase 1 — Planning &amp; Permits</div>
+    <div class="ms"><div class="mn">1</div><div class="mt">Finalise &amp; notarise lease agreements</div><div class="mo">Legal</div><div class="mp">Jan 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">2</div><div class="mt">Approve interior design drawings</div><div class="mo">Architect + Mgmt</div><div class="mp">Feb 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">3</div><div class="mt">Obtain municipality &amp; Jeddah Amanah permits</div><div class="mo">Legal</div><div class="mp">Feb–Mar 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">4</div><div class="mt">Sign main contractor agreements (MEP + civil)</div><div class="mo">Project Mgmt</div><div class="mp">Mar 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ph" style="margin-top:6px">Phase 2 — Construction &amp; Fit-Out</div>
+    <div class="ms"><div class="mn">5</div><div class="mt">Core construction &amp; finishing — Sobhy Kaber</div><div class="mo">Main Contractor</div><div class="mp">Mar–Jun 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">6</div><div class="mt">Core construction &amp; finishing — L'Avenue</div><div class="mo">Main Contractor</div><div class="mp">Mar–May 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">7</div><div class="mt">MEP installation &amp; HVAC systems</div><div class="mo">MEP Contractor</div><div class="mp">May–Jun 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">8</div><div class="mt">Kitchen equipment delivery &amp; installation</div><div class="mo">Equipment Supplier</div><div class="mp">Jun 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">9</div><div class="mt">Furniture, fixtures &amp; final décor</div><div class="mo">FF&amp;E Supplier</div><div class="mp">Jun–Jul 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ph" style="margin-top:6px">Phase 3 — Pre-Opening</div>
+    <div class="ms"><div class="mn">10</div><div class="mt">Recruit &amp; train team (kitchen + floor)</div><div class="mo">Human Resources</div><div class="mp">Jul 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">11</div><div class="mt">Menu development + test kitchen</div><div class="mo">Executive Chef</div><div class="mp">Jul 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">12</div><div class="mt">POS, reservation &amp; website setup</div><div class="mo">IT</div><div class="mp">Jul 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">13</div><div class="mt">Pre-launch marketing campaign (Social + PR)</div><div class="mo">Marketing</div><div class="mp">Jul–Aug 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ms"><div class="mn">14</div><div class="mt">Soft opening (invitees &amp; media)</div><div class="mo">Operations Mgmt</div><div class="mp">Aug 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+    <div class="ph" style="margin-top:6px">Phase 4 — Launch &amp; Monitoring</div>
+    <div class="ms"><div class="mn">15</div><div class="mt">Grand Opening</div><div class="mo">Senior Management</div><div class="mp">Sep 2027</div><div class="ms-s"><span class="pill st-tg">Target</span></div></div>
+    <div class="ms"><div class="mn">16</div><div class="mt">Weekly KPI review — first 3 months</div><div class="mo">Finance + Ops</div><div class="mp">Sep–Nov 2027</div><div class="ms-s"><span class="pill st-on">Ongoing</span></div></div>
+    <div class="ms"><div class="mn">17</div><div class="mt">Monthly P&amp;L vs. budget review</div><div class="mo">Finance</div><div class="mp">Monthly</div><div class="ms-s"><span class="pill st-on">Ongoing</span></div></div>
+    <div class="ms"><div class="mn">18</div><div class="mt">ROI assessment &amp; next-phase feasibility study</div><div class="mo">Board of Directors</div><div class="mp">Dec 2027</div><div class="ms-s"><span class="pill st-pl">Planned</span></div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="ft">
+  <span><strong>Western Region Expansion Strategy</strong> &nbsp;·&nbsp; Sobhy Kaber &amp; L'Avenue Branch 2 &nbsp;·&nbsp; Jeddah</span>
+  <span>Prepared by: <strong>Finance Division</strong> &nbsp;·&nbsp; <strong>Confidential — Senior Management</strong></span>
+</div>
+
+</div><!-- /page -->
+
+<script>
+function sw(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  // Scroll to very top so cover + tab bar are both visible
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
